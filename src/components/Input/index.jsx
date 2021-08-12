@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Container, Label, TextField } from './styles';
 
-export function Input({ label }) {
+export function Input({ label, value }) {
   return (
     <Container>
       <Label>
@@ -10,6 +10,7 @@ export function Input({ label }) {
       </Label>
       <TextField
         placeholder="d=(^_^)=b"
+        value={value}
       />
     </Container>
   )

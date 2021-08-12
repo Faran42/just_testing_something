@@ -7,7 +7,9 @@ const auth0 = new Auth0({
   clientId: 'E9q37EFvghyqA1Y2kuf1QloNxJVzfASL'
 });
 
+
 class Auth extends Component {
+  
   constructor() {
     super();
     this.state = {
@@ -20,11 +22,16 @@ class Auth extends Component {
       accessToken: '',
       idToken: '',
     };
+
+    global.token = 'dasdasdasd';
+    
     this.loginUser = this.loginUser.bind(this);
     this.getLoginCode = this.getLoginCode.bind(this);
     this.logoutUser = this.logoutUser.bind(this);
+
   }
 
+  
   getLoginCode() {
     this.setState({LogginIn: true});
     auth0.auth
@@ -44,13 +51,16 @@ class Auth extends Component {
         code: this.state.code,
       })
       .then(response => {
-        console.log(response);
+        
+        console.log(response.idToken);
+        global.token = response.idToken
         this.setState({
           image: response.picture,
           accessToken: response.accessToken,
           idToken: response.idToken,
           isLoggedin: true,
         });
+        
       })
       .catch(console.error);
   }
@@ -140,8 +150,6 @@ class Auth extends Component {
                     </Text>
 
                     <Button title="Logout" onPress={this.logoutUser} />
-
-
                   </View>
                 </View>
               </Modal>

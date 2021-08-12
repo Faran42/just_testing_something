@@ -1,13 +1,13 @@
-import { StatusBar } from 'expo-status-bar';
+import 'react-native-gesture-handler';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, StatusBar } from 'react-native';
 
-import { Page } from './src/Page'
+import { Routes } from './src/Routes'
 
 export default function App() {
   return (  
     
-      <Page />    
+      <Routes />    
 
   );
 }
