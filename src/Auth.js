@@ -1,12 +1,14 @@
 import React, {Component} from 'react';
 import Auth0 from 'react-native-auth0';
 import {Button, View, TextInput, Modal, Text, Image} from 'react-native';
+import {Token} from "./state";
+import {AgileHOC} from "@agile-ts/react";
+
 
 const auth0 = new Auth0({
   domain: 'dev-jinboo.us.auth0.com',
   clientId: 'E9q37EFvghyqA1Y2kuf1QloNxJVzfASL'
 });
-
 
 class Auth extends Component {
   
@@ -22,15 +24,24 @@ class Auth extends Component {
       accessToken: '',
       idToken: '',
     };
-
-    global.token = 'dasdasdasd';
     
     this.loginUser = this.loginUser.bind(this);
     this.getLoginCode = this.getLoginCode.bind(this);
     this.logoutUser = this.logoutUser.bind(this);
+    this.Func1 = this.Func1.bind(this);
+    this.resetToken = this.resetToken.bind(this);
 
   }
 
+  resetToken(){
+    Token.set('sdsd');
+    this.props.navigation.navigate('page')
+  }
+
+  Func1(){
+    Token.set(this.state.idToken);
+    this.props.navigation.navigate('page')
+  }
   
   getLoginCode() {
     this.setState({LogginIn: true});
@@ -53,7 +64,6 @@ class Auth extends Component {
       .then(response => {
         
         console.log(response.idToken);
-        global.token = response.idToken
         this.setState({
           image: response.picture,
           accessToken: response.accessToken,
@@ -104,7 +114,15 @@ class Auth extends Component {
               style={{padding: 10, marginBottom: 5}}
               title={LogginIn ? 'Processando...' : 'Pegar código'}
               onPress={this.getLoginCode}
+              
             />
+            <Button
+              style={{padding: 10, marginBottom: 5}}
+              title={'Reset Token'}
+              onPress={this.resetToken}
+              
+            />
+            
           </>
         ) : (
           <>
@@ -149,7 +167,12 @@ class Auth extends Component {
                       {'\n'}
                     </Text>
 
-                    <Button title="Logout" onPress={this.logoutUser} />
+                    <Button
+                      style={{padding: 10, marginBottom: 5}}
+                      title={'Back'}
+                      onPress={this.Func1}
+                      
+                    />
                   </View>
                 </View>
               </Modal>
@@ -160,5 +183,4 @@ class Auth extends Component {
     );
   }
 }
-
-export default Auth;
+export default AgileHOC(Auth, [Token]);
