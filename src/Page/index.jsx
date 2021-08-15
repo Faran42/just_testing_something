@@ -4,15 +4,35 @@ import { Input } from '../components/Input';
 import {Token} from "../state";
 import { useAgile } from "@agile-ts/react";
 import { useNavigation, useIsFocused  } from '@react-navigation/native'
-import { gql, useQuery } from '@apollo/client'
+import { useQuery, useLazyQuery } from '@apollo/client'
 import { Container, Wrapper1, Wrapper2, Wrapper3 } from './styles';
+import gql from "graphql-tag";
 import apiCalls from '../api'
 
 export function Page() {
   const navigation = useNavigation()
   const generatedToken = useAgile(Token);
   useIsFocused();
-  const { sendPhotoPerfil, sendUsername, sendNomeSobrenome, sendInteresses } = apiCalls();
+  
+  const QUERY1 = gql`
+  {
+    deputados{
+      edges{
+        __typename
+      }
+    }
+  }
+  `
+
+  const [
+    sendPhotoPerfil, 
+    { loading, data }
+  ] = useLazyQuery(QUERY1);
+
+    
+  if (data){
+    console.log("respondeu")
+  }
 
   return (
     <Container>
@@ -29,7 +49,7 @@ export function Page() {
       </Wrapper2>
       <Wrapper2>
         <Input label='Username' />
-        <Button title='ENVIAR' onPress={sendUsername}/>
+        <Button title='ENVIAR'/>
       </Wrapper2>
       
       <Wrapper2>
