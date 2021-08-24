@@ -34,7 +34,7 @@ class Auth extends Component {
   }
 
   resetToken(){
-    Token.set('sdsd');
+    Token.set('');
     this.props.navigation.navigate('page')
   }
 

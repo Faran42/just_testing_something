@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '../components/Button';
 import { Input } from '../components/Input';
 import {Token} from "../state";
@@ -7,14 +7,49 @@ import { useNavigation, useIsFocused  } from '@react-navigation/native'
 import { useQuery, useLazyQuery } from '@apollo/client'
 import { Container, Wrapper1, Wrapper2, Wrapper3 } from './styles';
 import gql from "graphql-tag";
-import apiCalls from '../api'
+import { Alert } from 'react-native'
 
 export function Page() {
   const navigation = useNavigation()
   const generatedToken = useAgile(Token);
   useIsFocused();
+
+  const [urlPhotoPerfil, setUrlPhotoPerfil] = useState('');
+  const [username, setUsername] = useState('');
+  const [name, setName] = useState('');
+  const [surname, setSurname] = useState('');
+  const [interest1, setInterest1] = useState('');
+  const [interest2, setInterest2] = useState('');
+  const [interest3, setInterest3] = useState('');
   
-  const QUERY1 = gql`
+  const QUERY_PHOTO = gql`
+  {
+    deputados{
+      edges{
+        __typename
+      }
+    }
+  }
+  `
+  const QUERY_USERNAME = gql`
+  {
+    deputados{
+      edges{
+        __typename
+      }
+    }
+  }
+  `
+  const QUERY_NAME_SUR = gql`
+  {
+    deputados{
+      edges{
+        __typename
+      }
+    }
+  }
+  `
+  const QUERY_INTERESTS = gql`
   {
     deputados{
       edges{
@@ -25,14 +60,21 @@ export function Page() {
   `
 
   const [
-    sendPhotoPerfil, 
-    { loading, data }
-  ] = useLazyQuery(QUERY1);
+    sendPhotoPerfil, { data: photoResult }
+  ] = useLazyQuery(QUERY_PHOTO);
 
-    
-  if (data){
-    console.log("respondeu")
-  }
+  const [
+    sendUsername, { data: usernameResult }
+  ] = useLazyQuery(QUERY_USERNAME);
+
+  const [
+    sendNameSurname, { data: nameSurnameData }
+  ] = useLazyQuery(QUERY_NAME_SUR);
+
+  const [
+    sendInterests, { data: interestsData }
+  ] = useLazyQuery(QUERY_INTERESTS);
+
 
   return (
     <Container>
@@ -44,23 +86,23 @@ export function Page() {
         <Button title='Cadastro' />
       </Wrapper2>
       <Wrapper2>
-        <Input label='Url da foto de Perfil' />
+        <Input label='Url da foto de Perfil' value={urlPhotoPerfil} onChange={e =>setUrlPhotoPerfil(e.target.value)}/>
         <Button title='ENVIAR' onPress={() => sendPhotoPerfil()}/>
       </Wrapper2>
       <Wrapper2>
-        <Input label='Username' />
-        <Button title='ENVIAR'/>
+        <Input label='Username' value={username} onChange={e =>setUsername(e.target.value)}/>
+        <Button title='ENVIAR' onPress={() => sendUsername()}/>
       </Wrapper2>
       
       <Wrapper2>
         <Wrapper3>
 
-        <Input label='Nome' />
+        <Input label='Nome' value={name} onChange={e =>setName(e.target.value)}/>
 
-        <Input label='Sobrenome' />
+        <Input label='Sobrenome' value={surname} onChange={e =>setSurname(e.target.value)}/>
         </Wrapper3>
 
-        <Button title='ENVIAR' />
+        <Button title='ENVIAR' onPress={() => sendNameSurname()}/>
       </Wrapper2>
       <Wrapper2>
         <Wrapper3>
@@ -70,7 +112,7 @@ export function Page() {
         <Input label='' />
         </Wrapper3>
 
-        <Button title='ENVIAR' />
+        <Button title='ENVIAR' onPress={() => sendInterests()}/>
       </Wrapper2>
 
       

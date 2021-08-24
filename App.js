@@ -8,23 +8,23 @@ import { setContext } from '@apollo/client/link/context';
 import { useAgile } from "@agile-ts/react";
 
 
-// const httpLink = createHttpLink({
-//   uri: 'https://graphql-camara-deputados.herokuapp.com/',
-// });
+const httpLink = createHttpLink({
+  uri: 'https://graphql-camara-deputados.herokuapp.com/',
+});
 
-// const authLink = setContext((_, { headers }) => {
-//   // get the authentication token from local storage if it exists
-//   let tok = useAgile(Token)
-//   const token = tok
-//   console.log("token", token)
-//   // return the headers to the context so httpLink can read them
-//   return {
-//     headers: {
-//       ...headers,
-//       authorization: token ? `Bearer ${token}` : "",
-//     }
-//   }
-// });
+const authLink = setContext((_, { headers }) => {
+  // get the authentication token from local storage if it exists
+  let tok = useAgile(Token)
+  const token = tok
+  console.log("token", token)
+  // return the headers to the context so httpLink can read them
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : "",
+    }
+  }
+});
 
 
 // // Initialize Apollo Client
