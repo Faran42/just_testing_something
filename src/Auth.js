@@ -60,17 +60,21 @@ class Auth extends Component {
       .loginWithSMS({
         phoneNumber: this.state.phone,
         code: this.state.code,
+        scope: "offline_access"
       })
       .then(response => {
-        
-        console.log(response.idToken);
+        console.log("refreshToken: ", response.refreshToken);
+        //aqui exemplo de refresh token
+        auth0.auth.refreshToken({refreshToken: response.refreshToken}).then(response => {
+          console.log(response)
+        })
+        .catch(console.error);
         this.setState({
           image: response.picture,
           accessToken: response.accessToken,
           idToken: response.idToken,
           isLoggedin: true,
         });
-        
       })
       .catch(console.error);
   }
